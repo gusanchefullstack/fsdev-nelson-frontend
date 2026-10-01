@@ -14,7 +14,10 @@ import {
 import { api, type Schemas } from '@/lib/api';
 
 interface Props {
-  trigger: ReactNode;
+  /** Omit when controlling the dialog with open/onOpenChange */
+  trigger?: ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   title: string;
   description?: string;
   /** e.g. "/budgets/123/deletion-impact" — lists what else will be removed (FR-020) */
@@ -26,10 +29,10 @@ interface Props {
 
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
-export function ConfirmDeleteDialog({ trigger, title, description, impactPath, confirmLabel = 'Delete', onConfirm, pending }: Props) {
+export function ConfirmDeleteDialog({ trigger, open, onOpenChange, title, description, impactPath, confirmLabel = 'Delete', onConfirm, pending }: Props) {
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      {trigger && <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>}
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>

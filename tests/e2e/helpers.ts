@@ -43,3 +43,45 @@ export async function logout(page: Page) {
   await page.getByRole('menuitem', { name: 'Log out' }).click();
   await expect(page).toHaveURL(/\/$/);
 }
+
+export async function createLiteBudget(page: Page, opts: { name?: string; currency?: 'USD' | 'COP'; start?: string; end?: string } = {}) {
+  await page.goto('/budgets/new/lite');
+  await page.getByLabel('Budget name').fill(opts.name ?? 'Household 2027');
+  if (opts.currency === 'COP') {
+    await page.getByLabel('Currency').click();
+    await page.getByRole('option', { name: /COP/ }).click();
+  }
+  await page.getByLabel('Start date').fill(opts.start ?? '2027-01-01');
+  await page.getByLabel('End date').fill(opts.end ?? '2027-12-31');
+  await page.getByRole('button', { name: 'Create budget' }).click();
+}
+
+export async function addCategory(page: Page, section: 'Income' | 'Expenses', name: string) {
+  await page.getByRole('region', { name: section }).getByRole('button', { name: 'Add category' }).click();
+  const dialog = page.getByRole('dialog');
+  await dialog.getByLabel('Name').fill(name);
+  await dialog.getByRole('button', { name: 'Add category' }).click();
+  await expect(dialog).toBeHidden();
+}
+
+export async function addItem(
+  page: Page,
+  category: string,
+  item: { name: string; amount: string; exec: string; start?: string; end?: string; frequency?: string },
+) {
+  const card = page.getByRole('article').filter({ has: page.getByRole('heading', { name: category, exact: true }) });
+  await card.getByRole('button', { name: 'Item' }).click();
+  const dialog = page.getByRole('dialog');
+  await dialog.getByLabel('Name').fill(item.name);
+  await dialog.getByLabel('Description').fill(`${item.name} payment`);
+  await dialog.getByLabel('Estimated amount').fill(item.amount);
+  if (item.frequency) {
+    await dialog.getByLabel('Frequency').click();
+    await page.getByRole('option', { name: item.frequency, exact: true }).click();
+  }
+  await dialog.getByLabel(/expected date/i).fill(item.exec);
+  if (item.start) await dialog.getByLabel('Start date').fill(item.start);
+  if (item.end) await dialog.getByLabel('End date').fill(item.end);
+  await dialog.getByRole('button', { name: 'Add item' }).click();
+  await expect(dialog).toBeHidden();
+}

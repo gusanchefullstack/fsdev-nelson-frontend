@@ -1,6 +1,15 @@
 import type { components } from './api-types';
 
 export type Schemas = components['schemas'];
+
+type DeepRequired<T> = T extends (infer U)[]
+  ? DeepRequired<U>[]
+  : T extends object
+    ? { [K in keyof T]-?: DeepRequired<Exclude<T[K], undefined>> }
+    : T;
+
+/** A server response shape: the API always sends every documented field (nullable ones as null). */
+export type Model<K extends keyof Schemas> = DeepRequired<Schemas[K]>;
 export type Currency = Schemas['Currency'];
 export type FlowKind = Schemas['FlowKind'];
 export type Frequency = Schemas['Frequency'];

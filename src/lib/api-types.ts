@@ -1811,6 +1811,9 @@ export interface components {
             over?: boolean;
         };
         BudgetItemWithBuckets: components["schemas"]["BudgetItem"] & {
+            /** Format: uuid */
+            budgetId?: string;
+            categoryName?: string;
             buckets?: components["schemas"]["Bucket"][];
         };
         CategoryInput: {

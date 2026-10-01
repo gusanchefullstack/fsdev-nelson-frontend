@@ -22,6 +22,10 @@ import { Route as AppPayorsIndexRouteImport } from './routes/_app/payors/index'
 import { Route as AppReportsIndexRouteImport } from './routes/_app/reports/index'
 import { Route as AppTransactionsIndexRouteImport } from './routes/_app/transactions/index'
 import { Route as AppVendorsIndexRouteImport } from './routes/_app/vendors/index'
+import { Route as AppBudgetsBudgetIdIndexRouteImport } from './routes/_app/budgets/$budgetId/index'
+import { Route as AppBudgetsBudgetIdReportsRouteImport } from './routes/_app/budgets/$budgetId/reports'
+import { Route as AppBudgetsNewLiteRouteImport } from './routes/_app/budgets/new.lite'
+import { Route as AppBudgetsBudgetIdItemsItemIdRouteImport } from './routes/_app/budgets/$budgetId/items/$itemId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -87,6 +91,28 @@ const AppVendorsIndexRoute = AppVendorsIndexRouteImport.update({
   path: '/vendors/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppBudgetsBudgetIdIndexRoute = AppBudgetsBudgetIdIndexRouteImport.update({
+  id: '/budgets/$budgetId/',
+  path: '/budgets/$budgetId/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBudgetsBudgetIdReportsRoute =
+  AppBudgetsBudgetIdReportsRouteImport.update({
+    id: '/budgets/$budgetId/reports',
+    path: '/budgets/$budgetId/reports',
+    getParentRoute: () => AppRoute,
+  } as any)
+const AppBudgetsNewLiteRoute = AppBudgetsNewLiteRouteImport.update({
+  id: '/budgets/new/lite',
+  path: '/budgets/new/lite',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBudgetsBudgetIdItemsItemIdRoute =
+  AppBudgetsBudgetIdItemsItemIdRouteImport.update({
+    id: '/budgets/$budgetId/items/$itemId',
+    path: '/budgets/$budgetId/items/$itemId',
+    getParentRoute: () => AppRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -101,6 +127,10 @@ export interface FileRoutesByFullPath {
   '/reports/': typeof AppReportsIndexRoute
   '/transactions/': typeof AppTransactionsIndexRoute
   '/vendors/': typeof AppVendorsIndexRoute
+  '/budgets/$budgetId/reports': typeof AppBudgetsBudgetIdReportsRoute
+  '/budgets/new/lite': typeof AppBudgetsNewLiteRoute
+  '/budgets/$budgetId/': typeof AppBudgetsBudgetIdIndexRoute
+  '/budgets/$budgetId/items/$itemId': typeof AppBudgetsBudgetIdItemsItemIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -115,6 +145,10 @@ export interface FileRoutesByTo {
   '/reports': typeof AppReportsIndexRoute
   '/transactions': typeof AppTransactionsIndexRoute
   '/vendors': typeof AppVendorsIndexRoute
+  '/budgets/$budgetId/reports': typeof AppBudgetsBudgetIdReportsRoute
+  '/budgets/new/lite': typeof AppBudgetsNewLiteRoute
+  '/budgets/$budgetId': typeof AppBudgetsBudgetIdIndexRoute
+  '/budgets/$budgetId/items/$itemId': typeof AppBudgetsBudgetIdItemsItemIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -131,6 +165,10 @@ export interface FileRoutesById {
   '/_app/reports/': typeof AppReportsIndexRoute
   '/_app/transactions/': typeof AppTransactionsIndexRoute
   '/_app/vendors/': typeof AppVendorsIndexRoute
+  '/_app/budgets/$budgetId/reports': typeof AppBudgetsBudgetIdReportsRoute
+  '/_app/budgets/new/lite': typeof AppBudgetsNewLiteRoute
+  '/_app/budgets/$budgetId/': typeof AppBudgetsBudgetIdIndexRoute
+  '/_app/budgets/$budgetId/items/$itemId': typeof AppBudgetsBudgetIdItemsItemIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -147,6 +185,10 @@ export interface FileRouteTypes {
     | '/reports/'
     | '/transactions/'
     | '/vendors/'
+    | '/budgets/$budgetId/reports'
+    | '/budgets/new/lite'
+    | '/budgets/$budgetId/'
+    | '/budgets/$budgetId/items/$itemId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -161,6 +203,10 @@ export interface FileRouteTypes {
     | '/reports'
     | '/transactions'
     | '/vendors'
+    | '/budgets/$budgetId/reports'
+    | '/budgets/new/lite'
+    | '/budgets/$budgetId'
+    | '/budgets/$budgetId/items/$itemId'
   id:
     | '__root__'
     | '/'
@@ -176,6 +222,10 @@ export interface FileRouteTypes {
     | '/_app/reports/'
     | '/_app/transactions/'
     | '/_app/vendors/'
+    | '/_app/budgets/$budgetId/reports'
+    | '/_app/budgets/new/lite'
+    | '/_app/budgets/$budgetId/'
+    | '/_app/budgets/$budgetId/items/$itemId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -279,6 +329,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppVendorsIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/budgets/$budgetId/': {
+      id: '/_app/budgets/$budgetId/'
+      path: '/budgets/$budgetId'
+      fullPath: '/budgets/$budgetId/'
+      preLoaderRoute: typeof AppBudgetsBudgetIdIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/budgets/$budgetId/reports': {
+      id: '/_app/budgets/$budgetId/reports'
+      path: '/budgets/$budgetId/reports'
+      fullPath: '/budgets/$budgetId/reports'
+      preLoaderRoute: typeof AppBudgetsBudgetIdReportsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/budgets/new/lite': {
+      id: '/_app/budgets/new/lite'
+      path: '/budgets/new/lite'
+      fullPath: '/budgets/new/lite'
+      preLoaderRoute: typeof AppBudgetsNewLiteRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/budgets/$budgetId/items/$itemId': {
+      id: '/_app/budgets/$budgetId/items/$itemId'
+      path: '/budgets/$budgetId/items/$itemId'
+      fullPath: '/budgets/$budgetId/items/$itemId'
+      preLoaderRoute: typeof AppBudgetsBudgetIdItemsItemIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
@@ -291,6 +369,10 @@ interface AppRouteChildren {
   AppReportsIndexRoute: typeof AppReportsIndexRoute
   AppTransactionsIndexRoute: typeof AppTransactionsIndexRoute
   AppVendorsIndexRoute: typeof AppVendorsIndexRoute
+  AppBudgetsBudgetIdReportsRoute: typeof AppBudgetsBudgetIdReportsRoute
+  AppBudgetsNewLiteRoute: typeof AppBudgetsNewLiteRoute
+  AppBudgetsBudgetIdIndexRoute: typeof AppBudgetsBudgetIdIndexRoute
+  AppBudgetsBudgetIdItemsItemIdRoute: typeof AppBudgetsBudgetIdItemsItemIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -302,6 +384,10 @@ const AppRouteChildren: AppRouteChildren = {
   AppReportsIndexRoute: AppReportsIndexRoute,
   AppTransactionsIndexRoute: AppTransactionsIndexRoute,
   AppVendorsIndexRoute: AppVendorsIndexRoute,
+  AppBudgetsBudgetIdReportsRoute: AppBudgetsBudgetIdReportsRoute,
+  AppBudgetsNewLiteRoute: AppBudgetsNewLiteRoute,
+  AppBudgetsBudgetIdIndexRoute: AppBudgetsBudgetIdIndexRoute,
+  AppBudgetsBudgetIdItemsItemIdRoute: AppBudgetsBudgetIdItemsItemIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

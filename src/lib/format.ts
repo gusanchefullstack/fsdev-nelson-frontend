@@ -33,7 +33,8 @@ export function formatShortDate(isoDate: string): string {
   return shortDateFormatter.format(new Date(`${isoDate}T00:00:00Z`));
 }
 
-export function formatDateRange(start: string, end: string): string {
+export function formatDateRange(start: string, end: string, opts: { withYear?: boolean } = {}): string {
+  if (opts.withYear) return `${formatDate(start)} – ${formatDate(end)}`;
   return `${formatShortDate(start)} – ${formatShortDate(end)}`;
 }
 
