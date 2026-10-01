@@ -28,7 +28,7 @@ export function ForecastChart({ data, currency }: { data: ForecastVsActual; curr
   const fmt = (v: number) => formatMoney(v, currency);
   return (
     <ResponsiveContainer width="100%" height={320}>
-      <ComposedChart data={rows} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
+      <ComposedChart data={rows} margin={{ top: 8, right: 8, left: 8, bottom: 0 }} accessibilityLayer={false}>
         <CartesianGrid stroke={chart.grid} vertical={false} />
         <XAxis dataKey="label" tick={chart.tick} stroke={chart.grid} />
         <YAxis tick={chart.tick} stroke={chart.grid} tickFormatter={(v: number) => formatMoney(v, currency).replace(/\.00$/, '')} width={80} />
@@ -43,11 +43,11 @@ export function ForecastChart({ data, currency }: { data: ForecastVsActual; curr
   );
 }
 
-export function ForecastTable({ data, currency }: { data: ForecastVsActual; currency: Currency }) {
+export function ForecastTable({ data, currency, focusable = true }: { data: ForecastVsActual; currency: Currency; focusable?: boolean }) {
   const rows = toForecastRows(data.series);
   const fmt = (v: number) => formatMoney(v, currency);
   return (
-    <Table>
+    <Table containerLabel="Forecast table" focusable={focusable}>
       <caption className="sr-only">Expected versus actual per month</caption>
       <TableHeader>
         <TableRow>

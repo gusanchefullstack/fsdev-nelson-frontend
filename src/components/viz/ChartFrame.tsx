@@ -7,11 +7,13 @@ interface Props {
   description?: ReactNode;
   chart: ReactNode;
   table: ReactNode;
+  /** Same table for screen readers when the chart is shown (not keyboard-focusable) */
+  srTable?: ReactNode;
   actions?: ReactNode;
 }
 
 /** Card with a chart and an equivalent data table the user can switch to (accessibility). */
-export function ChartFrame({ title, description, chart, table, actions }: Props) {
+export function ChartFrame({ title, description, chart, table, srTable, actions }: Props) {
   const [asTable, setAsTable] = useState(false);
   return (
     <section className="rounded-xl border bg-card p-5" aria-label={title}>
@@ -27,9 +29,9 @@ export function ChartFrame({ title, description, chart, table, actions }: Props)
           </Button>
         </div>
       </div>
-      {asTable ? <div className="overflow-x-auto">{table}</div> : <div aria-hidden>{chart}</div>}
+      {asTable ? <div className="overflow-x-auto" tabIndex={0} role="region" aria-label={`${title} data`}>{table}</div> : <div aria-hidden>{chart}</div>}
       {/* Screen readers always get the table */}
-      {!asTable && <div className="sr-only">{table}</div>}
+      {!asTable && <div className="sr-only">{srTable ?? table}</div>}
     </section>
   );
 }

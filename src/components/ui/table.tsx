@@ -1,11 +1,22 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-function Table({ className, ...props }: React.ComponentProps<"table">) {
+function Table({
+  className,
+  containerLabel = "Table",
+  focusable = true,
+  ...props
+}: React.ComponentProps<"table"> & { containerLabel?: string; focusable?: boolean }) {
   return (
     <div
       data-slot="table-container"
-      className="relative w-full overflow-x-auto"
+      role={focusable ? "region" : undefined}
+      aria-label={focusable ? containerLabel : undefined}
+      // Focusable so narrow screens can scroll wide tables with the keyboard (WCAG 2.1.1);
+      // the rule cannot see the conditional role="region" above
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+      tabIndex={focusable ? 0 : undefined}
+      className={cn("relative w-full", focusable && "overflow-x-auto")}
     >
       <table
         data-slot="table"

@@ -128,6 +128,7 @@ function ForecastTab({ budget }: { budget: BudgetDetail }) {
       }
       chart={data ? <ForecastChart data={data} currency={budget.currency} /> : <Skeleton className="h-80" />}
       table={data ? <ForecastTable data={data} currency={budget.currency} /> : null}
+      srTable={data ? <ForecastTable data={data} currency={budget.currency} focusable={false} /> : null}
     />
   );
 }
@@ -178,7 +179,7 @@ function ProjectionTab({ budget }: { budget: BudgetDetail }) {
         </p>
       </section>
       <section className="rounded-xl border bg-card" aria-label="Projection by item">
-        <Table>
+        <Table containerLabel="Projection by item table">
           <TableHeader>
             <TableRow>
               <TableHead scope="col">Item</TableHead>

@@ -7,7 +7,14 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { BucketGauge, gaugeState } from '@/components/viz/BucketGauge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { itemQuery, type Bucket } from '@/features/budgets/api';
 import { transactionsQuery } from '@/features/transactions/api';
 import { TransactionRow } from '@/features/transactions/TransactionRow';
@@ -15,14 +22,23 @@ import { formatDate, formatDateRange } from '@/lib/format';
 import { frequencyLabels } from '@/lib/labels';
 import { cn } from '@/lib/utils';
 
-export const Route = createFileRoute('/_app/budgets/$budgetId/items/$itemId')({ component: ItemPage });
+export const Route = createFileRoute('/_app/budgets/$budgetId/items/$itemId')({
+  component: ItemPage,
+});
 
-const STATUS: Record<Bucket['status'], string> = { PAST: 'Closed', CURRENT: 'Open now', FUTURE: 'Upcoming' };
+const STATUS: Record<Bucket['status'], string> = {
+  PAST: 'Closed',
+  CURRENT: 'Open now',
+  FUTURE: 'Upcoming',
+};
 
 export function BucketStatusBadge({ bucket }: { bucket: Bucket }) {
   if (bucket.over) return <Badge className="bg-warning-soft text-warning">Over</Badge>;
   return (
-    <Badge variant="outline" className={cn(bucket.status === 'CURRENT' && 'border-primary text-primary')}>
+    <Badge
+      variant="outline"
+      className={cn(bucket.status === 'CURRENT' && 'border-primary text-primary')}
+    >
       {STATUS[bucket.status]}
     </Badge>
   );
@@ -38,7 +54,11 @@ function ItemPage() {
 
   return (
     <>
-      <Link to="/budgets/$budgetId" params={{ budgetId }} className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+      <Link
+        to="/budgets/$budgetId"
+        params={{ budgetId }}
+        className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+      >
         <ChevronLeft className="size-4" aria-hidden /> Back to budget
       </Link>
       <PageHeader
@@ -67,11 +87,17 @@ function ItemPage() {
         </div>
         <div>
           <dt className="label-caps">Frequency</dt>
-          <dd className="mt-1">{frequencyLabels[item.frequency]}{item.frequency === 'CUSTOM' && ` · every ${item.customInterval} ${item.customUnit?.toLowerCase()}`}</dd>
+          <dd className="mt-1">
+            {frequencyLabels[item.frequency]}
+            {item.frequency === 'CUSTOM' &&
+              ` · every ${item.customInterval} ${item.customUnit?.toLowerCase()}`}
+          </dd>
         </div>
         <div>
           <dt className="label-caps">Period</dt>
-          <dd className="mt-1 tabular">{formatDateRange(item.startDate, item.endDate, { withYear: true })}</dd>
+          <dd className="mt-1 tabular">
+            {formatDateRange(item.startDate, item.endDate, { withYear: true })}
+          </dd>
         </div>
         <div>
           <dt className="label-caps">Buckets</dt>
@@ -84,27 +110,33 @@ function ItemPage() {
           Buckets
         </h2>
         <div className="mb-4 rounded-xl border bg-card p-4">
-          <ul className="flex gap-3 overflow-x-auto pb-2" aria-label="Bucket map">
-            {item.buckets.map((b) => (
-              <li key={b.id} className="flex flex-col items-center gap-1">
-                <BucketGauge name={item.name} bucket={b} selected={b.status === 'CURRENT'} />
-                <span className="tabular text-xs text-muted-foreground" aria-hidden>
-                  {formatDate(b.estimatedExecutionDate).replace(/, \d{4}$/, '')}
-                </span>
-              </li>
-            ))}
-          </ul>
+          <div role="region" aria-label="Bucket map" tabIndex={0} className="overflow-x-auto pb-2">
+            <ul className="flex gap-3" aria-label="Buckets">
+              {item.buckets.map((b) => (
+                <li key={b.id} className="flex flex-col items-center gap-1">
+                  <BucketGauge name={item.name} bucket={b} selected={b.status === 'CURRENT'} />
+                  <span className="tabular text-xs text-muted-foreground" aria-hidden>
+                    {formatDate(b.estimatedExecutionDate).replace(/, \d{4}$/, '')}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
           <Legend />
         </div>
         <div className="rounded-xl border bg-card">
-          <Table>
+          <Table containerLabel={`${item.name} buckets`}>
             <TableHeader>
               <TableRow>
                 <TableHead scope="col">#</TableHead>
                 <TableHead scope="col">Window</TableHead>
                 <TableHead scope="col">Expected date</TableHead>
-                <TableHead scope="col" className="text-right">Expected</TableHead>
-                <TableHead scope="col" className="text-right">Actual</TableHead>
+                <TableHead scope="col" className="text-right">
+                  Expected
+                </TableHead>
+                <TableHead scope="col" className="text-right">
+                  Actual
+                </TableHead>
                 <TableHead scope="col">Last activity</TableHead>
                 <TableHead scope="col">Status</TableHead>
               </TableRow>
@@ -113,15 +145,21 @@ function ItemPage() {
               {item.buckets.map((b) => (
                 <TableRow key={b.id} aria-current={b.status === 'CURRENT' ? 'date' : undefined}>
                   <TableCell className="tabular">{b.sequence + 1}</TableCell>
-                  <TableCell className="tabular whitespace-nowrap">{formatDateRange(b.startDate, b.endDate)}</TableCell>
-                  <TableCell className="whitespace-nowrap">{formatDate(b.estimatedExecutionDate)}</TableCell>
+                  <TableCell className="tabular whitespace-nowrap">
+                    {formatDateRange(b.startDate, b.endDate)}
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    {formatDate(b.estimatedExecutionDate)}
+                  </TableCell>
                   <TableCell className="text-right">
                     <Money amount={b.estimatedAmount} currency={b.currency} />
                   </TableCell>
                   <TableCell className={cn('text-right', b.over && 'text-warning')}>
                     <Money amount={b.actualAmount} currency={b.currency} />
                   </TableCell>
-                  <TableCell className="whitespace-nowrap">{b.actualDate ? formatDate(b.actualDate) : '—'}</TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    {b.actualDate ? formatDate(b.actualDate) : '—'}
+                  </TableCell>
                   <TableCell>
                     <BucketStatusBadge bucket={b} />
                   </TableCell>
@@ -137,16 +175,25 @@ function ItemPage() {
           Transactions
         </h2>
         {rows.length === 0 ? (
-          <p className="rounded-xl border bg-card p-6 text-center text-muted-foreground">No transactions recorded for this item yet.</p>
+          <p className="rounded-xl border bg-card p-6 text-center text-muted-foreground">
+            No transactions recorded for this item yet.
+          </p>
         ) : (
-          <ul className="divide-y rounded-xl border bg-card" aria-label={`${item.name} transactions`}>
+          <ul
+            className="divide-y rounded-xl border bg-card"
+            aria-label={`${item.name} transactions`}
+          >
             {rows.map((t) => (
               <TransactionRow key={t.id} t={t} />
             ))}
           </ul>
         )}
         {transactions.hasNextPage && (
-          <Button variant="outline" className="mt-3" onClick={() => void transactions.fetchNextPage()}>
+          <Button
+            variant="outline"
+            className="mt-3"
+            onClick={() => void transactions.fetchNextPage()}
+          >
             Load more
           </Button>
         )}
@@ -165,7 +212,10 @@ const LEGEND = [
 
 function Legend() {
   return (
-    <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="Legend">
+    <ul
+      className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground"
+      aria-label="Legend"
+    >
       {LEGEND.map((l) => (
         <li key={l.state} className="flex items-center gap-1.5">
           <span className={cn('size-3 rounded-sm', l.className)} aria-hidden />

@@ -142,9 +142,9 @@
   --subtle-foreground: #5f6b82;
   --border: #d5dbe6;
   --input: #c5ccd8;
-  --ring: #08805a;
+  --ring: #077650;
 
-  --primary: #08805a;
+  --primary: #077650;
   --primary-hover: #066a4a;
   --primary-foreground: #ffffff;
   --primary-soft: #e3f7ee;
@@ -153,9 +153,9 @@
   --accent: #e6eaf1;
   --accent-foreground: #0b1222;
 
-  --success: #08805a;
+  --success: #077650;
   --success-soft: #e3f7ee;
-  --warning: #b4530f;
+  --warning: #a14a0d;
   --warning-soft: #fdeee2;
   --info: #3d5af0;
   --info-soft: #e8ecff;
@@ -170,13 +170,13 @@
   --bucket-upcoming: #dde3ec;
   --bucket-outline: #c5ccd8;
 
-  --chart-1: #08805a;
+  --chart-1: #077650;
   --chart-2: #4d6bff;
   --chart-3: #e07020;
   --chart-4: #1d8f90;
   --chart-5: #6a8f2c;
   --chart-6: #7c93ff;
-  --chart-7: #b4530f;
+  --chart-7: #a14a0d;
   --chart-8: #55627a;
   --chart-grid: #dde3ec;
 
