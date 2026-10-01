@@ -11,6 +11,8 @@ you planned.
 ![Tailwind](https://img.shields.io/badge/Tailwind-4-06B6D4?logo=tailwindcss&logoColor=white)
 ![WCAG](https://img.shields.io/badge/WCAG-2.2%20AA-2e7d32)
 
+**Live demo: [fsdev-nelson-frontend.vercel.app](https://fsdev-nelson-frontend.vercel.app)**
+
 > API: [fsdev-nelson-backend](https://github.com/gusanchefullstack/fsdev-nelson-backend)
 
 ## Table of Contents
@@ -127,8 +129,8 @@ The E2E suite starts both the frontend and the backend (against the Neon `develo
 
 ## Deployment
 
-Deployed to **Vercel** as a static SPA. Set the backend URL in [`vercel.json`](vercel.json)
-(`<BACKEND_URL>` placeholder) before the first deploy.
+Deployed to **Vercel** as a static SPA at https://fsdev-nelson-frontend.vercel.app. Pushes to `main`
+deploy automatically; [`vercel.json`](vercel.json) rewrites `/api/*` to the production API.
 
 ## What I learned
 
