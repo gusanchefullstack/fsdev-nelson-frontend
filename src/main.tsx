@@ -8,6 +8,7 @@ import { isApiError } from '@/lib/api';
 import { meQuery } from '@/lib/session';
 import '@/lib/temporal';
 import { initTheme } from '@/stores/theme';
+import { NotFound, RootError, RoutePending } from './routes/__root';
 import { routeTree } from './routeTree.gen';
 import './styles/index.css';
 
@@ -33,6 +34,11 @@ const router = createRouter({
   routeTree,
   context: { queryClient },
   defaultPreload: 'intent',
+  // Friendly pages for every route, never the router's raw error output (FR-049)
+  defaultErrorComponent: RootError,
+  defaultNotFoundComponent: NotFound,
+  defaultPendingComponent: RoutePending,
+  defaultPendingMs: 300,
   scrollRestoration: true,
 });
 

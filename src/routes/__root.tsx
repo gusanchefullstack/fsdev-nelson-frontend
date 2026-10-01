@@ -20,7 +20,7 @@ function Shell({ title, children }: { title: string; children: React.ReactNode }
 }
 
 /** Friendly fallback — never shows raw error text (FR-049). */
-function RootError() {
+export function RootError() {
   const router = useRouter();
   return (
     <Shell title="Something went wrong">
@@ -37,7 +37,17 @@ function RootError() {
   );
 }
 
-function NotFound() {
+/** Shown while route guards load the session, so the page is never blank. */
+export function RoutePending() {
+  return (
+    <div role="status" aria-live="polite" className="flex min-h-[50dvh] items-center justify-center">
+      <span className="size-8 animate-spin rounded-full border-2 border-muted border-t-primary" aria-hidden />
+      <span className="sr-only">Loading…</span>
+    </div>
+  );
+}
+
+export function NotFound() {
   return (
     <Shell title="Page not found">
       <p className="max-w-md text-muted-foreground">The page you're looking for doesn't exist or was moved.</p>
