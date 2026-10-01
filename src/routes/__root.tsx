@@ -1,3 +1,4 @@
+import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { Outlet, createRootRouteWithContext, Link, useRouter } from '@tanstack/react-router';
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/button';
@@ -20,15 +21,24 @@ function Shell({ title, children }: { title: string; children: React.ReactNode }
 }
 
 /** Friendly fallback — never shows raw error text (FR-049). */
-export function RootError() {
+export function RootError({ reset }: { reset?: () => void }) {
   const router = useRouter();
+  const queryReset = useQueryErrorResetBoundary();
   return (
     <Shell title="Something went wrong">
       <p className="max-w-md text-muted-foreground">
         We hit an unexpected problem loading this page. Your data is safe. Please try again.
       </p>
       <div className="flex gap-3">
-        <Button onClick={() => void router.invalidate()}>Try again</Button>
+        <Button
+          onClick={() => {
+            queryReset.reset();
+            reset?.();
+            void router.invalidate();
+          }}
+        >
+          Try again
+        </Button>
         <Button variant="outline" asChild>
           <Link to="/">Go home</Link>
         </Button>

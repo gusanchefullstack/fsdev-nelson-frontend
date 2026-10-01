@@ -26,7 +26,12 @@ const queryClient = new QueryClient({
   queryCache: new QueryCache({ onError: onAuthError }),
   mutationCache: new MutationCache({ onError: onAuthError }),
   defaultOptions: {
-    queries: { retry: (count, error) => !(isApiError(error) && error.status < 500) && count < 2, staleTime: 15_000 },
+    queries: {
+      retry: (count, error) => !(isApiError(error) && error.status < 500) && count < 2,
+      staleTime: 15_000,
+      // A page whose data never loaded shows the friendly error page instead of an endless skeleton
+      throwOnError: (error, query) => query.state.data === undefined && !(isApiError(error) && error.status === 401),
+    },
   },
 });
 
