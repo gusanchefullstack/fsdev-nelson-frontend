@@ -117,7 +117,8 @@
   }
   .bg-hero {
     background-image: var(--gradient-hero), var(--gradient-grid);
-    background-size: auto, 32px 32px;
+    /* hero = 2 radial layers, grid = 2 linear layers */
+    background-size: auto, auto, 32px 32px, 32px 32px;
   }
   .text-gradient-brand {
     background: var(--gradient-brand);

@@ -14,8 +14,8 @@ interface GuardArgs {
 
 async function loadMe(queryClient: QueryClient) {
   const me = await queryClient.ensureQueryData(meQuery);
-  // Server-stored theme wins once known (FR-045)
-  if (me && me.theme && me.theme !== useThemeStore.getState().preference) {
+  // An explicit server-stored theme wins (FR-045); "match device" keeps the visitor's local choice
+  if (me && me.theme && me.theme !== 'SYSTEM' && me.theme !== useThemeStore.getState().preference) {
     useThemeStore.getState().setPreference(me.theme);
   }
   return me;
