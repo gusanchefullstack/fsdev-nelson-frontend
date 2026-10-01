@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+package-lock.json
+src/routeTree.gen.ts
+src/lib/api-types.ts
+playwright-report/
+test-results/
