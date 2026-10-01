@@ -25,6 +25,8 @@ import { Route as AppPayorsIdRouteImport } from './routes/_app/payors/$id'
 import { Route as AppPayorsNewRouteImport } from './routes/_app/payors/new'
 import { Route as AppReportsIndexRouteImport } from './routes/_app/reports/index'
 import { Route as AppTransactionsIndexRouteImport } from './routes/_app/transactions/index'
+import { Route as AppTransactionsIdRouteImport } from './routes/_app/transactions/$id'
+import { Route as AppTransactionsNewRouteImport } from './routes/_app/transactions/new'
 import { Route as AppVendorsIndexRouteImport } from './routes/_app/vendors/index'
 import { Route as AppVendorsIdRouteImport } from './routes/_app/vendors/$id'
 import { Route as AppVendorsNewRouteImport } from './routes/_app/vendors/new'
@@ -112,6 +114,16 @@ const AppTransactionsIndexRoute = AppTransactionsIndexRouteImport.update({
   path: '/transactions/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppTransactionsIdRoute = AppTransactionsIdRouteImport.update({
+  id: '/transactions/$id',
+  path: '/transactions/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTransactionsNewRoute = AppTransactionsNewRouteImport.update({
+  id: '/transactions/new',
+  path: '/transactions/new',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppVendorsIndexRoute = AppVendorsIndexRouteImport.update({
   id: '/vendors/',
   path: '/vendors/',
@@ -161,6 +173,8 @@ export interface FileRoutesByFullPath {
   '/accounts/new': typeof AppAccountsNewRoute
   '/payors/$id': typeof AppPayorsIdRoute
   '/payors/new': typeof AppPayorsNewRoute
+  '/transactions/$id': typeof AppTransactionsIdRoute
+  '/transactions/new': typeof AppTransactionsNewRoute
   '/vendors/$id': typeof AppVendorsIdRoute
   '/vendors/new': typeof AppVendorsNewRoute
   '/accounts/': typeof AppAccountsIndexRoute
@@ -185,6 +199,8 @@ export interface FileRoutesByTo {
   '/accounts/new': typeof AppAccountsNewRoute
   '/payors/$id': typeof AppPayorsIdRoute
   '/payors/new': typeof AppPayorsNewRoute
+  '/transactions/$id': typeof AppTransactionsIdRoute
+  '/transactions/new': typeof AppTransactionsNewRoute
   '/vendors/$id': typeof AppVendorsIdRoute
   '/vendors/new': typeof AppVendorsNewRoute
   '/accounts': typeof AppAccountsIndexRoute
@@ -211,6 +227,8 @@ export interface FileRoutesById {
   '/_app/accounts/new': typeof AppAccountsNewRoute
   '/_app/payors/$id': typeof AppPayorsIdRoute
   '/_app/payors/new': typeof AppPayorsNewRoute
+  '/_app/transactions/$id': typeof AppTransactionsIdRoute
+  '/_app/transactions/new': typeof AppTransactionsNewRoute
   '/_app/vendors/$id': typeof AppVendorsIdRoute
   '/_app/vendors/new': typeof AppVendorsNewRoute
   '/_app/accounts/': typeof AppAccountsIndexRoute
@@ -237,6 +255,8 @@ export interface FileRouteTypes {
     | '/accounts/new'
     | '/payors/$id'
     | '/payors/new'
+    | '/transactions/$id'
+    | '/transactions/new'
     | '/vendors/$id'
     | '/vendors/new'
     | '/accounts/'
@@ -261,6 +281,8 @@ export interface FileRouteTypes {
     | '/accounts/new'
     | '/payors/$id'
     | '/payors/new'
+    | '/transactions/$id'
+    | '/transactions/new'
     | '/vendors/$id'
     | '/vendors/new'
     | '/accounts'
@@ -286,6 +308,8 @@ export interface FileRouteTypes {
     | '/_app/accounts/new'
     | '/_app/payors/$id'
     | '/_app/payors/new'
+    | '/_app/transactions/$id'
+    | '/_app/transactions/new'
     | '/_app/vendors/$id'
     | '/_app/vendors/new'
     | '/_app/accounts/'
@@ -422,6 +446,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTransactionsIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/transactions/$id': {
+      id: '/_app/transactions/$id'
+      path: '/transactions/$id'
+      fullPath: '/transactions/$id'
+      preLoaderRoute: typeof AppTransactionsIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/transactions/new': {
+      id: '/_app/transactions/new'
+      path: '/transactions/new'
+      fullPath: '/transactions/new'
+      preLoaderRoute: typeof AppTransactionsNewRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/vendors/': {
       id: '/_app/vendors/'
       path: '/vendors'
@@ -481,6 +519,8 @@ interface AppRouteChildren {
   AppAccountsNewRoute: typeof AppAccountsNewRoute
   AppPayorsIdRoute: typeof AppPayorsIdRoute
   AppPayorsNewRoute: typeof AppPayorsNewRoute
+  AppTransactionsIdRoute: typeof AppTransactionsIdRoute
+  AppTransactionsNewRoute: typeof AppTransactionsNewRoute
   AppVendorsIdRoute: typeof AppVendorsIdRoute
   AppVendorsNewRoute: typeof AppVendorsNewRoute
   AppAccountsIndexRoute: typeof AppAccountsIndexRoute
@@ -502,6 +542,8 @@ const AppRouteChildren: AppRouteChildren = {
   AppAccountsNewRoute: AppAccountsNewRoute,
   AppPayorsIdRoute: AppPayorsIdRoute,
   AppPayorsNewRoute: AppPayorsNewRoute,
+  AppTransactionsIdRoute: AppTransactionsIdRoute,
+  AppTransactionsNewRoute: AppTransactionsNewRoute,
   AppVendorsIdRoute: AppVendorsIdRoute,
   AppVendorsNewRoute: AppVendorsNewRoute,
   AppAccountsIndexRoute: AppAccountsIndexRoute,

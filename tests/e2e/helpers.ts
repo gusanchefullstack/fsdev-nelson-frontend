@@ -104,3 +104,45 @@ export async function createSource(
   await page.getByRole('button', { name: /^Save / }).click();
   await expect(page).toHaveURL(new RegExp(`/${kind}$`));
 }
+
+/** API call with the page's session cookie — fast setup for UI tests. */
+export async function apiPost<T = { id: string }>(page: Page, path: string, body: object): Promise<T> {
+  const res = await page.request.post(`/api/v1${path}`, { data: body });
+  expect(res.status(), `${path}: ${await res.text()}`).toBeLessThan(300);
+  return (await res.json()) as T;
+}
+
+/** Quickstart world: USD 2027 budget with Housing/Rent, Main Checking, Pesos (COP), Acme, Landlord, PGE. */
+export async function seedWorld(page: Page) {
+  const budget = await apiPost<{ id: string }>(page, '/budgets', { name: 'Household 2027', currency: 'USD', startDate: '2027-01-01', endDate: '2027-12-31' });
+  const housing = await apiPost(page, `/budgets/${budget.id}/categories`, { kind: 'EXPENSE', name: 'Housing' });
+  const rent = await apiPost(page, `/categories/${housing.id}/items`, {
+    name: 'Rent',
+    description: 'Apartment',
+    estimatedAmount: '5000.00',
+    estimatedExecutionDate: '2027-01-20',
+    frequency: 'MONTHLY',
+  });
+  const checking = await apiPost(page, '/financial-accounts', { name: 'Main Checking', type: 'CHECKING', currency: 'USD', openingBalance: '10000.00' });
+  await apiPost(page, '/financial-accounts', { name: 'Pesos', type: 'SAVINGS', currency: 'COP', openingBalance: '0' });
+  await apiPost(page, '/payors', { name: 'Acme Corp', type: 'EMPLOYER', currency: 'USD' });
+  const landlord = await apiPost(page, '/vendors', { name: 'Landlord', type: 'HOUSING', currency: 'USD' });
+  await apiPost(page, '/vendors', { name: 'PGE', type: 'UTILITY', currency: 'USD' });
+  return { budget, housing, rent, checking, landlord };
+}
+
+export async function recordExpense(
+  page: Page,
+  t: { item: string; amount: string; date: string; account?: string; vendor?: string; time?: string },
+  opts: { expectSaved?: boolean } = {},
+) {
+  await page.goto('/transactions/new');
+  await chooseSelect(page, 'Budget item', t.item);
+  await page.getByLabel('Amount').fill(t.amount);
+  await page.getByLabel('Date').fill(t.date);
+  await page.getByLabel('Time').fill(t.time ?? '10:00');
+  await chooseSelect(page, 'From (account)', t.account ?? 'Main Checking');
+  await chooseSelect(page, 'To (vendor)', t.vendor ?? 'Landlord');
+  await page.getByRole('button', { name: 'Save transaction' }).click();
+  if (opts.expectSaved ?? true) await expect(page).toHaveURL(/\/transactions$/);
+}

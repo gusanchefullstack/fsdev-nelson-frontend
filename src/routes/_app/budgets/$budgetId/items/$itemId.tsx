@@ -1,12 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { Link, createFileRoute } from '@tanstack/react-router';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Plus } from 'lucide-react';
 import { Money } from '@/components/Money';
 import { PageHeader } from '@/components/PageHeader';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { itemQuery, type Bucket } from '@/features/budgets/api';
+import { transactionsQuery } from '@/features/transactions/api';
+import { TransactionRow } from '@/features/transactions/TransactionRow';
 import { formatDate, formatDateRange } from '@/lib/format';
 import { frequencyLabels } from '@/lib/labels';
 import { cn } from '@/lib/utils';
@@ -27,6 +30,8 @@ export function BucketStatusBadge({ bucket }: { bucket: Bucket }) {
 function ItemPage() {
   const { budgetId, itemId } = Route.useParams();
   const { data: item, isPending } = useQuery(itemQuery(itemId));
+  const transactions = useInfiniteQuery(transactionsQuery({ itemId }, 50));
+  const rows = transactions.data?.pages.flatMap((p) => p.data) ?? [];
 
   if (isPending || !item) return <Skeleton className="h-96" />;
 
@@ -44,6 +49,13 @@ function ItemPage() {
           </>
         }
         description={item.description}
+        actions={
+          <Button asChild>
+            <Link to="/transactions/new" search={{ budgetId, itemId, kind: item.kind }}>
+              <Plus aria-hidden /> Record transaction
+            </Link>
+          </Button>
+        }
       />
       <dl className="mb-8 grid gap-4 rounded-xl border bg-card p-5 sm:grid-cols-4">
         <div>
@@ -104,6 +116,26 @@ function ItemPage() {
             </TableBody>
           </Table>
         </div>
+      </section>
+
+      <section aria-labelledby="tx-heading" className="mt-8">
+        <h2 id="tx-heading" className="mb-3 text-lg font-semibold">
+          Transactions
+        </h2>
+        {rows.length === 0 ? (
+          <p className="rounded-xl border bg-card p-6 text-center text-muted-foreground">No transactions recorded for this item yet.</p>
+        ) : (
+          <ul className="divide-y rounded-xl border bg-card" aria-label={`${item.name} transactions`}>
+            {rows.map((t) => (
+              <TransactionRow key={t.id} t={t} />
+            ))}
+          </ul>
+        )}
+        {transactions.hasNextPage && (
+          <Button variant="outline" className="mt-3" onClick={() => void transactions.fetchNextPage()}>
+            Load more
+          </Button>
+        )}
       </section>
     </>
   );
