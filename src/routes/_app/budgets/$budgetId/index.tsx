@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { ConfirmDeleteDialog } from '@/components/ConfirmDeleteDialog';
 import { Money } from '@/components/Money';
 import { PageHeader } from '@/components/PageHeader';
+import { BucketGauge } from '@/components/viz/BucketGauge';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -289,6 +290,7 @@ function ItemRow({ budget, category, item, onEdit }: { budget: BudgetDetail; cat
           )}
         </p>
       </div>
+      {item.currentBucket && <BucketGauge name={item.name} bucket={item.currentBucket} className="h-10 w-9" />}
       <div className="text-right text-sm">
         <p className="tabular">
           <Money amount={item.actualToDate} currency={budget.currency} /> /{' '}

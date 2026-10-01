@@ -6,6 +6,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { BucketGauge, gaugeState } from '@/components/viz/BucketGauge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { itemQuery, type Bucket } from '@/features/budgets/api';
 import { transactionsQuery } from '@/features/transactions/api';
@@ -82,6 +83,19 @@ function ItemPage() {
         <h2 id="buckets-heading" className="mb-3 text-lg font-semibold">
           Buckets
         </h2>
+        <div className="mb-4 rounded-xl border bg-card p-4">
+          <ul className="flex gap-3 overflow-x-auto pb-2" aria-label="Bucket map">
+            {item.buckets.map((b) => (
+              <li key={b.id} className="flex flex-col items-center gap-1">
+                <BucketGauge name={item.name} bucket={b} selected={b.status === 'CURRENT'} />
+                <span className="tabular text-xs text-muted-foreground" aria-hidden>
+                  {formatDate(b.estimatedExecutionDate).replace(/, \d{4}$/, '')}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <Legend />
+        </div>
         <div className="rounded-xl border bg-card">
           <Table>
             <TableHeader>
@@ -138,5 +152,26 @@ function ItemPage() {
         )}
       </section>
     </>
+  );
+}
+
+const LEGEND = [
+  { state: 'on-target', label: 'On target', className: 'bg-bucket-on-target' },
+  { state: 'over', label: 'Over', className: 'bg-bucket-over' },
+  { state: 'under', label: 'Under', className: 'bg-bucket-under' },
+  { state: 'open', label: 'Open now', className: 'bg-bucket-open' },
+  { state: 'upcoming', label: 'Upcoming', className: 'bg-bucket-upcoming border' },
+] as const satisfies { state: ReturnType<typeof gaugeState>; label: string; className: string }[];
+
+function Legend() {
+  return (
+    <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="Legend">
+      {LEGEND.map((l) => (
+        <li key={l.state} className="flex items-center gap-1.5">
+          <span className={cn('size-3 rounded-sm', l.className)} aria-hidden />
+          {l.label}
+        </li>
+      ))}
+    </ul>
   );
 }

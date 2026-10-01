@@ -1790,6 +1790,8 @@ export interface components {
             expectedToDate?: components["schemas"]["Money"];
             actualToDate?: components["schemas"]["Money"];
             adjustments?: "END_DATE_CLIPPED"[];
+            /** @description Bucket open today or the next one (budget detail only) */
+            currentBucket?: components["schemas"]["Bucket"] | null;
         };
         Bucket: {
             /** Format: uuid */
