@@ -146,3 +146,10 @@ export async function recordExpense(
   await page.getByRole('button', { name: 'Save transaction' }).click();
   if (opts.expectSaved ?? true) await expect(page).toHaveURL(/\/transactions$/);
 }
+
+/** Clicks a main-navigation link, opening the mobile menu first when needed. */
+export async function navTo(page: Page, label: string) {
+  const menu = page.getByRole('button', { name: 'Open menu' });
+  if (await menu.isVisible()) await menu.click();
+  await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: label }).filter({ visible: true }).click();
+}

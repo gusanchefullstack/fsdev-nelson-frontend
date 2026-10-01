@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useForm, type Control, type FieldValues, type Path } from 'react-hook-form';
 import { z } from 'zod';
 import { SelectField, TextAreaField, TextField } from '@/components/fields';
 import { Button } from '@/components/ui/button';
@@ -61,30 +61,7 @@ export function BudgetBasicsForm({ initial, lockCurrency, submitLabel, onSubmit,
   return (
     <Form {...form}>
       <form onSubmit={(e) => void submit(e)} className="flex flex-col gap-4" noValidate>
-        <TextField control={form.control} name="name" label="Budget name" placeholder="Household 2027" />
-        <TextAreaField control={form.control} name="description" label="Description (optional)" />
-        <SelectField
-          control={form.control}
-          name="currency"
-          label="Currency"
-          options={options(currencyLabels)}
-          disabled={lockCurrency}
-          description={lockCurrency ? "The currency can't be changed after the budget is created." : 'All items and transactions use this currency.'}
-        />
-        <div className="grid gap-4 sm:grid-cols-2">
-          <TextField control={form.control} name="startDate" label="Start date" type="date" />
-          <TextField control={form.control} name="endDate" label="End date" type="date" />
-        </div>
-        <TextField
-          control={form.control}
-          name="alertThresholdPct"
-          label="Alert threshold (%)"
-          type="number"
-          inputMode="numeric"
-          min={1}
-          max={100}
-          description="Get an alert when income falls short, or spending runs over, by more than this."
-        />
+        <BudgetBasicsFields control={form.control} lockCurrency={lockCurrency} />
         <div className="flex gap-2 pt-2">
           <Button type="submit" disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting ? 'Saving…' : submitLabel}
@@ -97,5 +74,38 @@ export function BudgetBasicsForm({ initial, lockCurrency, submitLabel, onSubmit,
         </div>
       </form>
     </Form>
+  );
+}
+
+/** Name, currency, dates and threshold — used by Lite, Guided and Complete. */
+export function BudgetBasicsFields<T extends FieldValues>({ control, lockCurrency }: { control: Control<T>; lockCurrency?: boolean }) {
+  const n = (s: string) => s as Path<T>;
+  return (
+    <div className="flex flex-col gap-4">
+        <TextField control={control} name={n('name')} label="Budget name" placeholder="Household 2027" />
+        <TextAreaField control={control} name={n('description')} label="Description (optional)" />
+        <SelectField
+          control={control}
+          name={n('currency')}
+          label="Currency"
+          options={options(currencyLabels)}
+          disabled={lockCurrency}
+          description={lockCurrency ? "The currency can't be changed after the budget is created." : 'All items and transactions use this currency.'}
+        />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <TextField control={control} name={n('startDate')} label="Start date" type="date" />
+          <TextField control={control} name={n('endDate')} label="End date" type="date" />
+        </div>
+        <TextField
+          control={control}
+          name={n('alertThresholdPct')}
+          label="Alert threshold (%)"
+          type="number"
+          inputMode="numeric"
+          min={1}
+          max={100}
+          description="Get an alert when income falls short, or spending runs over, by more than this."
+        />
+    </div>
   );
 }

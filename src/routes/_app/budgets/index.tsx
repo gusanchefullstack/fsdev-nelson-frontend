@@ -6,7 +6,14 @@ import { Money } from '@/components/Money';
 import { PageHeader } from '@/components/PageHeader';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import { budgetsQuery } from '@/features/budgets/api';
 import { formatDateRange } from '@/lib/format';
@@ -14,9 +21,24 @@ import { formatDateRange } from '@/lib/format';
 export const Route = createFileRoute('/_app/budgets/')({ component: BudgetsPage });
 
 const MODES = [
-  { to: '/budgets/new/lite', title: 'Lite', icon: Rows3, text: 'Name, currency and dates now. Add categories and items later.', ready: true },
-  { to: '/budgets/new/guided', title: 'Guided', icon: Sparkles, text: 'Step by step: income first, then expenses.', ready: false },
-  { to: '/budgets/new/complete', title: 'Complete', icon: ListTree, text: 'Everything on one screen as a tree.', ready: false },
+  {
+    to: '/budgets/new/lite',
+    title: 'Lite',
+    icon: Rows3,
+    text: 'Name, currency and dates now. Add categories and items later.',
+  },
+  {
+    to: '/budgets/new/guided',
+    title: 'Guided',
+    icon: Sparkles,
+    text: 'Step by step: income first, then expenses.',
+  },
+  {
+    to: '/budgets/new/complete',
+    title: 'Complete',
+    icon: ListTree,
+    text: 'Everything on one screen as a tree.',
+  },
 ] as const;
 
 function NewBudgetButton() {
@@ -30,30 +52,23 @@ function NewBudgetButton() {
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>How do you want to start?</DialogTitle>
-          <DialogDescription>You can always add or change categories and items later.</DialogDescription>
+          <DialogDescription>
+            You can always add or change categories and items later.
+          </DialogDescription>
         </DialogHeader>
         <ul className="flex flex-col gap-3">
-          {MODES.map(({ to, title, icon: Icon, text, ready }) => (
+          {MODES.map(({ to, title, icon: Icon, text }) => (
             <li key={to}>
-              {ready ? (
-                <Link to={to} className="flex items-start gap-3 rounded-lg border p-4 transition hover:border-primary hover:bg-surface-hover">
-                  <Icon className="mt-0.5 size-5 text-primary" aria-hidden />
-                  <span>
-                    <span className="block font-semibold">{title}</span>
-                    <span className="text-sm text-muted-foreground">{text}</span>
-                  </span>
-                </Link>
-              ) : (
-                <div className="flex items-start gap-3 rounded-lg border p-4 opacity-60" aria-disabled>
-                  <Icon className="mt-0.5 size-5" aria-hidden />
-                  <span>
-                    <span className="block font-semibold">
-                      {title} <Badge variant="secondary">Coming soon</Badge>
-                    </span>
-                    <span className="text-sm text-muted-foreground">{text}</span>
-                  </span>
-                </div>
-              )}
+              <Link
+                to={to}
+                className="flex items-start gap-3 rounded-lg border p-4 transition hover:border-primary hover:bg-surface-hover"
+              >
+                <Icon className="mt-0.5 size-5 text-primary" aria-hidden />
+                <span>
+                  <span className="block font-semibold">{title}</span>
+                  <span className="text-sm text-muted-foreground">{text}</span>
+                </span>
+              </Link>
             </li>
           ))}
         </ul>
@@ -66,7 +81,11 @@ function BudgetsPage() {
   const { data, isPending } = useQuery(budgetsQuery);
   return (
     <>
-      <PageHeader title="Budgets" description="Each budget covers one currency and one period." actions={<NewBudgetButton />} />
+      <PageHeader
+        title="Budgets"
+        description="Each budget covers one currency and one period."
+        actions={<NewBudgetButton />}
+      />
       {isPending ? (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {[0, 1, 2].map((i) => (
@@ -92,29 +111,39 @@ function BudgetsPage() {
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <h2 className="truncate text-lg font-semibold">{b.name}</h2>
-                    <p className="text-sm text-muted-foreground">{formatDateRange(b.startDate, b.endDate, { withYear: true })}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {formatDateRange(b.startDate, b.endDate, { withYear: true })}
+                    </p>
                   </div>
                   <div className="flex shrink-0 gap-1">
                     <Badge variant="outline">{b.currency}</Badge>
                     {b.isActive && <Badge className="bg-primary-soft text-primary">Active</Badge>}
                   </div>
                 </div>
-                {(
+                {
                   <dl className="grid grid-cols-2 gap-3 text-sm">
                     <div>
                       <dt className="label-caps">Income to date</dt>
                       <dd>
-                        <Money amount={b.totals.actualIncomeToDate} currency={b.currency} className="text-base" />
+                        <Money
+                          amount={b.totals.actualIncomeToDate}
+                          currency={b.currency}
+                          className="text-base"
+                        />
                       </dd>
                     </div>
                     <div>
                       <dt className="label-caps">Spent to date</dt>
                       <dd>
-                        <Money amount={b.totals.actualExpenseToDate} currency={b.currency} className="text-base" />
+                        <Money
+                          amount={b.totals.actualExpenseToDate}
+                          currency={b.currency}
+                          className="text-base"
+                        />
                       </dd>
                     </div>
                   </dl>
-                )}
+                }
               </Link>
             </li>
           ))}
