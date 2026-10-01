@@ -10,5 +10,9 @@ export default defineConfig({
     { name: 'tablet', use: { ...devices['Desktop Chrome'], viewport: { width: 768, height: 1024 } } },
     { name: 'desktop', use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },
   ],
-  webServer: { command: 'npm run dev', url: 'http://localhost:5173', reuseExistingServer: true },
+  webServer: [
+    // Backend against the Neon development branch
+    { command: 'npm --prefix ../fsdev-nelson-backend run dev', url: 'http://localhost:3000/api/auth/ok', reuseExistingServer: true, timeout: 60_000 },
+    { command: 'npm run dev', url: 'http://localhost:5173', reuseExistingServer: true },
+  ],
 });

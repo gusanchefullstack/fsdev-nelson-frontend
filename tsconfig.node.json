@@ -26,6 +26,7 @@
     "vitest.config.ts",
     "playwright.config.ts",
     "eslint.config.ts",
-    "tests/e2e"
+    "tests/e2e",
+    "types"
   ]
 }
