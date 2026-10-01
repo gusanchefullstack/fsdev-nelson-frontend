@@ -1,4 +1,4 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { ComingSoon } from '@/components/ComingSoon';
+import { SourceListPage } from '@/features/sources/pages';
 
-export const Route = createFileRoute('/_app/vendors/')({ component: () => <ComingSoon title="Vendors" /> });
+export const Route = createFileRoute('/_app/vendors/')({ component: () => <SourceListPage kind="vendors" /> });

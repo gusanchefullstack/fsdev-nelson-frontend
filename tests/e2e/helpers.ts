@@ -85,3 +85,22 @@ export async function addItem(
   await dialog.getByRole('button', { name: 'Add item' }).click();
   await expect(dialog).toBeHidden();
 }
+
+export async function chooseSelect(page: Page, label: string, option: string | RegExp) {
+  await page.getByLabel(label, { exact: true }).click();
+  await page.getByRole('option', { name: option, exact: typeof option === 'string' }).click();
+}
+
+export async function createSource(
+  page: Page,
+  kind: 'accounts' | 'payors' | 'vendors',
+  data: { name: string; type: string; currency?: 'USD' | 'COP'; balance?: string },
+) {
+  await page.goto(`/${kind}/new`);
+  await page.getByLabel('Name', { exact: true }).fill(data.name);
+  await chooseSelect(page, 'Type', data.type);
+  if (data.currency === 'COP') await chooseSelect(page, 'Currency', /COP/);
+  if (data.balance !== undefined) await page.getByLabel('Current balance').fill(data.balance);
+  await page.getByRole('button', { name: /^Save / }).click();
+  await expect(page).toHaveURL(new RegExp(`/${kind}$`));
+}

@@ -17,11 +17,17 @@ import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppProfileRouteImport } from './routes/_app/profile'
 import { Route as OnboardingProfileRouteImport } from './routes/onboarding.profile'
 import { Route as AppAccountsIndexRouteImport } from './routes/_app/accounts/index'
+import { Route as AppAccountsIdRouteImport } from './routes/_app/accounts/$id'
+import { Route as AppAccountsNewRouteImport } from './routes/_app/accounts/new'
 import { Route as AppBudgetsIndexRouteImport } from './routes/_app/budgets/index'
 import { Route as AppPayorsIndexRouteImport } from './routes/_app/payors/index'
+import { Route as AppPayorsIdRouteImport } from './routes/_app/payors/$id'
+import { Route as AppPayorsNewRouteImport } from './routes/_app/payors/new'
 import { Route as AppReportsIndexRouteImport } from './routes/_app/reports/index'
 import { Route as AppTransactionsIndexRouteImport } from './routes/_app/transactions/index'
 import { Route as AppVendorsIndexRouteImport } from './routes/_app/vendors/index'
+import { Route as AppVendorsIdRouteImport } from './routes/_app/vendors/$id'
+import { Route as AppVendorsNewRouteImport } from './routes/_app/vendors/new'
 import { Route as AppBudgetsBudgetIdIndexRouteImport } from './routes/_app/budgets/$budgetId/index'
 import { Route as AppBudgetsBudgetIdReportsRouteImport } from './routes/_app/budgets/$budgetId/reports'
 import { Route as AppBudgetsNewLiteRouteImport } from './routes/_app/budgets/new.lite'
@@ -66,6 +72,16 @@ const AppAccountsIndexRoute = AppAccountsIndexRouteImport.update({
   path: '/accounts/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAccountsIdRoute = AppAccountsIdRouteImport.update({
+  id: '/accounts/$id',
+  path: '/accounts/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAccountsNewRoute = AppAccountsNewRouteImport.update({
+  id: '/accounts/new',
+  path: '/accounts/new',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppBudgetsIndexRoute = AppBudgetsIndexRouteImport.update({
   id: '/budgets/',
   path: '/budgets/',
@@ -74,6 +90,16 @@ const AppBudgetsIndexRoute = AppBudgetsIndexRouteImport.update({
 const AppPayorsIndexRoute = AppPayorsIndexRouteImport.update({
   id: '/payors/',
   path: '/payors/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPayorsIdRoute = AppPayorsIdRouteImport.update({
+  id: '/payors/$id',
+  path: '/payors/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPayorsNewRoute = AppPayorsNewRouteImport.update({
+  id: '/payors/new',
+  path: '/payors/new',
   getParentRoute: () => AppRoute,
 } as any)
 const AppReportsIndexRoute = AppReportsIndexRouteImport.update({
@@ -89,6 +115,16 @@ const AppTransactionsIndexRoute = AppTransactionsIndexRouteImport.update({
 const AppVendorsIndexRoute = AppVendorsIndexRouteImport.update({
   id: '/vendors/',
   path: '/vendors/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppVendorsIdRoute = AppVendorsIdRouteImport.update({
+  id: '/vendors/$id',
+  path: '/vendors/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppVendorsNewRoute = AppVendorsNewRouteImport.update({
+  id: '/vendors/new',
+  path: '/vendors/new',
   getParentRoute: () => AppRoute,
 } as any)
 const AppBudgetsBudgetIdIndexRoute = AppBudgetsBudgetIdIndexRouteImport.update({
@@ -121,6 +157,12 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AppDashboardRoute
   '/profile': typeof AppProfileRoute
   '/onboarding/profile': typeof OnboardingProfileRoute
+  '/accounts/$id': typeof AppAccountsIdRoute
+  '/accounts/new': typeof AppAccountsNewRoute
+  '/payors/$id': typeof AppPayorsIdRoute
+  '/payors/new': typeof AppPayorsNewRoute
+  '/vendors/$id': typeof AppVendorsIdRoute
+  '/vendors/new': typeof AppVendorsNewRoute
   '/accounts/': typeof AppAccountsIndexRoute
   '/budgets/': typeof AppBudgetsIndexRoute
   '/payors/': typeof AppPayorsIndexRoute
@@ -139,6 +181,12 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AppDashboardRoute
   '/profile': typeof AppProfileRoute
   '/onboarding/profile': typeof OnboardingProfileRoute
+  '/accounts/$id': typeof AppAccountsIdRoute
+  '/accounts/new': typeof AppAccountsNewRoute
+  '/payors/$id': typeof AppPayorsIdRoute
+  '/payors/new': typeof AppPayorsNewRoute
+  '/vendors/$id': typeof AppVendorsIdRoute
+  '/vendors/new': typeof AppVendorsNewRoute
   '/accounts': typeof AppAccountsIndexRoute
   '/budgets': typeof AppBudgetsIndexRoute
   '/payors': typeof AppPayorsIndexRoute
@@ -159,6 +207,12 @@ export interface FileRoutesById {
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/profile': typeof AppProfileRoute
   '/onboarding/profile': typeof OnboardingProfileRoute
+  '/_app/accounts/$id': typeof AppAccountsIdRoute
+  '/_app/accounts/new': typeof AppAccountsNewRoute
+  '/_app/payors/$id': typeof AppPayorsIdRoute
+  '/_app/payors/new': typeof AppPayorsNewRoute
+  '/_app/vendors/$id': typeof AppVendorsIdRoute
+  '/_app/vendors/new': typeof AppVendorsNewRoute
   '/_app/accounts/': typeof AppAccountsIndexRoute
   '/_app/budgets/': typeof AppBudgetsIndexRoute
   '/_app/payors/': typeof AppPayorsIndexRoute
@@ -179,6 +233,12 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/profile'
     | '/onboarding/profile'
+    | '/accounts/$id'
+    | '/accounts/new'
+    | '/payors/$id'
+    | '/payors/new'
+    | '/vendors/$id'
+    | '/vendors/new'
     | '/accounts/'
     | '/budgets/'
     | '/payors/'
@@ -197,6 +257,12 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/profile'
     | '/onboarding/profile'
+    | '/accounts/$id'
+    | '/accounts/new'
+    | '/payors/$id'
+    | '/payors/new'
+    | '/vendors/$id'
+    | '/vendors/new'
     | '/accounts'
     | '/budgets'
     | '/payors'
@@ -216,6 +282,12 @@ export interface FileRouteTypes {
     | '/_app/dashboard'
     | '/_app/profile'
     | '/onboarding/profile'
+    | '/_app/accounts/$id'
+    | '/_app/accounts/new'
+    | '/_app/payors/$id'
+    | '/_app/payors/new'
+    | '/_app/vendors/$id'
+    | '/_app/vendors/new'
     | '/_app/accounts/'
     | '/_app/budgets/'
     | '/_app/payors/'
@@ -294,6 +366,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAccountsIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/accounts/$id': {
+      id: '/_app/accounts/$id'
+      path: '/accounts/$id'
+      fullPath: '/accounts/$id'
+      preLoaderRoute: typeof AppAccountsIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/accounts/new': {
+      id: '/_app/accounts/new'
+      path: '/accounts/new'
+      fullPath: '/accounts/new'
+      preLoaderRoute: typeof AppAccountsNewRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/budgets/': {
       id: '/_app/budgets/'
       path: '/budgets'
@@ -306,6 +392,20 @@ declare module '@tanstack/react-router' {
       path: '/payors'
       fullPath: '/payors/'
       preLoaderRoute: typeof AppPayorsIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/payors/$id': {
+      id: '/_app/payors/$id'
+      path: '/payors/$id'
+      fullPath: '/payors/$id'
+      preLoaderRoute: typeof AppPayorsIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/payors/new': {
+      id: '/_app/payors/new'
+      path: '/payors/new'
+      fullPath: '/payors/new'
+      preLoaderRoute: typeof AppPayorsNewRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/reports/': {
@@ -327,6 +427,20 @@ declare module '@tanstack/react-router' {
       path: '/vendors'
       fullPath: '/vendors/'
       preLoaderRoute: typeof AppVendorsIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/vendors/$id': {
+      id: '/_app/vendors/$id'
+      path: '/vendors/$id'
+      fullPath: '/vendors/$id'
+      preLoaderRoute: typeof AppVendorsIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/vendors/new': {
+      id: '/_app/vendors/new'
+      path: '/vendors/new'
+      fullPath: '/vendors/new'
+      preLoaderRoute: typeof AppVendorsNewRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/budgets/$budgetId/': {
@@ -363,6 +477,12 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppProfileRoute: typeof AppProfileRoute
+  AppAccountsIdRoute: typeof AppAccountsIdRoute
+  AppAccountsNewRoute: typeof AppAccountsNewRoute
+  AppPayorsIdRoute: typeof AppPayorsIdRoute
+  AppPayorsNewRoute: typeof AppPayorsNewRoute
+  AppVendorsIdRoute: typeof AppVendorsIdRoute
+  AppVendorsNewRoute: typeof AppVendorsNewRoute
   AppAccountsIndexRoute: typeof AppAccountsIndexRoute
   AppBudgetsIndexRoute: typeof AppBudgetsIndexRoute
   AppPayorsIndexRoute: typeof AppPayorsIndexRoute
@@ -378,6 +498,12 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppProfileRoute: AppProfileRoute,
+  AppAccountsIdRoute: AppAccountsIdRoute,
+  AppAccountsNewRoute: AppAccountsNewRoute,
+  AppPayorsIdRoute: AppPayorsIdRoute,
+  AppPayorsNewRoute: AppPayorsNewRoute,
+  AppVendorsIdRoute: AppVendorsIdRoute,
+  AppVendorsNewRoute: AppVendorsNewRoute,
   AppAccountsIndexRoute: AppAccountsIndexRoute,
   AppBudgetsIndexRoute: AppBudgetsIndexRoute,
   AppPayorsIndexRoute: AppPayorsIndexRoute,
